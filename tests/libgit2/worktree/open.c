@@ -124,3 +124,26 @@ void test_worktree_open__open_from_nonworktree_fails(void)
 
 	cl_git_fail(git_worktree_open_from_repository(&wt, fixture.repo));
 }
+
+void test_worktree_open__relativeworktrees_extension(void)
+{
+	git_repository *wt;
+	git_config *config;
+
+	/*
+	 * Enable the relativeworktrees extension (format version 1
+	 * is required for extensions). The existing test fixture
+	 * already stores relative paths in its gitdir/commondir
+	 * link files, so this verifies that repos with the extension
+	 * can be opened and paths resolve correctly.
+	 */
+	cl_git_pass(git_repository_config(&config, fixture.repo));
+	cl_git_pass(git_config_set_int32(config, "core.repositoryformatversion", 1));
+	cl_git_pass(git_config_set_bool(config, "extensions.relativeworktrees", true));
+	git_config_free(config);
+
+	cl_git_pass(git_repository_open(&wt, WORKTREE_REPO));
+	assert_worktree_valid(wt, COMMON_REPO, WORKTREE_REPO);
+
+	git_repository_free(wt);
+}

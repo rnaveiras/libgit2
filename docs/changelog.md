@@ -1,3 +1,16 @@
+v1.10.0
+-------
+
+### New features
+
+* libgit2 now supports the `relativeworktrees` repository extension,
+  introduced in git 2.48.0. This extension is set when worktrees are
+  created with `git worktree add --relative-paths`, causing worktree
+  link files (gitdir, commondir) to store relative paths instead of
+  absolute paths. libgit2 already resolved relative paths in these
+  files, so this change registers the extension name so that
+  repositories with this extension can be opened.
+
 v1.9.0
 ------
 

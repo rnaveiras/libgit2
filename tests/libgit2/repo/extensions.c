@@ -80,3 +80,14 @@ void test_repo_extensions__preciousobjects(void)
 	cl_git_pass(git_repository_open(&extended, "empty_bare.git"));
 	git_repository_free(extended);
 }
+
+void test_repo_extensions__relativeworktrees(void)
+{
+	git_repository *extended = NULL;
+
+	cl_repo_set_bool(repo, "extensions.relativeworktrees", true);
+
+	cl_git_pass(git_repository_open(&extended, "empty_bare.git"));
+	cl_assert(git_repository_path(extended) != NULL);
+	git_repository_free(extended);
+}
